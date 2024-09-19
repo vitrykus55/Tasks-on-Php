@@ -1,17 +1,21 @@
-<!--#2-->
-
 <?php
-$arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-$n = 3;
 
-$result = [];
-
-for ($i = 0; $i < count($arr); $i += $n)
+function is_prime($n)
 {
-    $result[]= array_slice($arr, $i, $n);
-}
-echo '<pre>';
-print_r($result);
-echo '</pre>';
+    if ($n < 2) {
+        return 'false'; // Числа менші за 2 не є простими
+    }
 
-?>
+    for ($i = 2; $i < $n; $i++) {
+        if ($n % $i == 0) {
+            return 'false'; // Знайдено дільник, число не просте
+        }
+    }
+
+    return 'true'; // Дільників не знайдено, число просте
+}
+
+echo is_prime(7) . "\n";  // true
+echo is_prime(18) . "\n"; // false
+echo is_prime(11) . "\n"; // true
+echo is_prime(178) . "\n"; // false
