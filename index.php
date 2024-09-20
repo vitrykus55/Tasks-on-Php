@@ -1,10 +1,7 @@
 <?php
 
-function is_prime($n)
 class Color
 {
-    if ($n < 2) {
-        return 'false'; // Числа менші за 2 не є простими
     private int $red;
     private int $green;
     private int $blue;
@@ -34,9 +31,6 @@ class Color
         }
     }
 
-    for ($i = 2; $i < $n; $i++) {
-        if ($n % $i == 0) {
-            return 'false'; // Знайдено дільник, число не просте
     public function setBlue(int $value): void
     {
         if ($value >= 0 && $value <= 255) {
@@ -46,7 +40,6 @@ class Color
         }
     }
 
-    return 'true'; // Дільників не знайдено, число просте
     public function getRed(): int
     {
         return $this->red;
@@ -86,10 +79,7 @@ class Color
     }
 }
 
-echo is_prime(7) . "\n";  // true
-echo is_prime(18) . "\n"; // false
-echo is_prime(11) . "\n"; // true
-echo is_prime(178) . "\n"; // false$color1 = new Color(250, 250, 250);
+$color1 = new Color(250, 250, 250);
 $color2 = new Color(100, 100, 100);
 $mixedColor = $color1->mix($color2);
 
