@@ -13,31 +13,27 @@ class Color
         $this->setBlue($blue);
     }
 
+    private function setColor(string $color, int $value): void
+    {
+        if ($value < 0 || $value > 255) {
+            throw new InvalidArgumentException("{$color} value must be between 0 and 255.");
+        }
+        $this->$color = $value;
+    }
+
     public function setRed(int $value): void
     {
-        if ($value >= 0 && $value <= 255) {
-            $this->red = $value;
-        } else {
-            throw new InvalidArgumentException('Red value must be between 0 and 255.');
-        }
+        $this->setColor('red', $value);
     }
 
     public function setGreen(int $value): void
     {
-        if ($value >= 0 && $value <= 255) {
-            $this->green = $value;
-        } else {
-            throw new InvalidArgumentException('Green value must be between 0 and 255.');
-        }
+        $this->setColor('green', $value);
     }
 
     public function setBlue(int $value): void
     {
-        if ($value >= 0 && $value <= 255) {
-            $this->blue = $value;
-        } else {
-            throw new InvalidArgumentException('Blue value must be between 0 and 255.');
-        }
+        $this->setColor('blue', $value);
     }
 
     public function getRed(): int
@@ -62,12 +58,18 @@ class Color
             $color->getBlue() === $this->blue;
     }
 
-    public function random(): void
+    public function equalsTwoScreens(Color $color1, Color $color2): bool
     {
-        $this->red = random_int(0, 255);
-        $this->green = random_int(0, 255);
-        $this->blue = random_int(0, 255);
+        return $this->equals($color1) && $this->equals($color2);
     }
+
+    public static function random(): void
+    {
+        self::$red = random_int(0, 255);
+        self::$green = random_int(0, 255);
+        self::$blue = random_int(0, 255);
+    }
+
 
     public function mix(Color $color): Color
     {
@@ -83,4 +85,4 @@ $color1 = new Color(250, 250, 250);
 $color2 = new Color(100, 100, 100);
 $mixedColor = $color1->mix($color2);
 
-echo "Mixed Color - Red: " . $mixedColor->getRed() . ", Green: " . $mixedColor->getGreen() . ", Blue: " . $mixedColor->getBlue();
+echo 'Mixed Color - Red: ' . $mixedColor->getRed() . ', Green: ' . $mixedColor->getGreen() . ', Blue: ' . $mixedColor->getBlue();
