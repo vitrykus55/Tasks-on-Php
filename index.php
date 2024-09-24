@@ -72,6 +72,13 @@ class Color
             $this->getBlue() === $otherColor->getBlue();
     }
 
+    public function isEqual2(Color $color1, Color $color2): bool
+    {
+        return $color1->getRed() === $color2->getRed() &&
+            $color1->getGreen() === $color2->getGreen() &&
+            $color1->getBlue() === $color2->getBlue();
+    }
+
 
     public static function random(): Color
     {
@@ -105,8 +112,9 @@ if (Color::compareColors($color1, $color3)) {
 
 if ($color1->isEqual($color2)) {
     echo "\n The colors are the same.";
-}else{
+} else {
     echo "\n The colors are different.";
 
 }
+
 var_dump(Color::compareColors($color1, $color3));
