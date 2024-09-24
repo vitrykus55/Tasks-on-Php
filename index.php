@@ -102,4 +102,11 @@ if (Color::compareColors($color1, $color3)) {
     echo "\n The colors are different.";
 }
 
+
+if ($color1->isEqual($color2)) {
+    echo "\n The colors are the same.";
+}else{
+    echo "\n The colors are different.";
+
+}
 var_dump(Color::compareColors($color1, $color3));
