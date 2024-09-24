@@ -58,18 +58,29 @@ class Color
             $color->getBlue() === $this->blue;
     }
 
-    public function equalsTwoScreens(Color $color1, Color $color2): bool
+    public static function compareColors(Color $color1, Color $color2): bool
     {
-        return $this->equals($color1) && $this->equals($color2);
+        return $color1->getRed() === $color2->getRed() &&
+            $color1->getGreen() === $color2->getGreen() &&
+            $color1->getBlue() === $color2->getBlue();
     }
 
-    public static function random(): void
+    public function isEqual(Color $otherColor): bool
     {
-        self::$red = random_int(0, 255);
-        self::$green = random_int(0, 255);
-        self::$blue = random_int(0, 255);
+        return $this->getRed() === $otherColor->getRed() &&
+            $this->getGreen() === $otherColor->getGreen() &&
+            $this->getBlue() === $otherColor->getBlue();
     }
 
+
+    public static function random(): Color
+    {
+        $red = random_int(0, 255);
+        $green = random_int(0, 255);
+        $blue = random_int(0, 255);
+
+        return new Color($red, $green, $blue);
+    }
 
     public function mix(Color $color): Color
     {
@@ -81,8 +92,14 @@ class Color
     }
 }
 
-$color1 = new Color(250, 250, 250);
+$color1 = new Color(255, 255, 255);
 $color2 = new Color(100, 100, 100);
-$mixedColor = $color1->mix($color2);
+$color3 = new Color(255, 255, 255);
 
-echo 'Mixed Color - Red: ' . $mixedColor->getRed() . ', Green: ' . $mixedColor->getGreen() . ', Blue: ' . $mixedColor->getBlue();
+if (Color::compareColors($color1, $color3)) {
+    echo "\n The colors are the same.";
+} else {
+    echo "\n The colors are different.";
+}
+
+var_dump(Color::compareColors($color1, $color3));
