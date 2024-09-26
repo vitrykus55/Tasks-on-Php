@@ -2,69 +2,74 @@
 
 class Product
 {
-    public string $name;
-    public int $price;
-    public int $quantity;
+    private string $name;
+    private string $value;
 
-    public function __construct(string $name, int $price, int $quantity)
+    public function __construct(string $name, string $value)
     {
         $this->name = $name;
-        $this->price = $price;
-        $this->quantity = $quantity;
+        $this->value = $value;
     }
 
-    public function totalCost(): int
+    public function getName(): string
     {
-        return $this->price * $this->quantity;
+        return $this->name;
     }
 
-    public function applyDiscount(float $discount_percentage): void
+    public function getValue(): string
     {
-        $this->price -= $this->price * ($discount_percentage / 100);
+        return $this->value;
     }
 
-    public function getPrice(): int
+    public function setName(string $name): void
     {
-        return $this->price;
+        $this->name = $name;
     }
 
-    public function isAvailable(): bool
+    public function setValue(string $value): void
     {
-        return $this->quantity > 0;
-    }
-
-    public function increaseQuantity(int $amount): void
-    {
-        $this->quantity += $amount;
-    }
-
-    public function decreaseQuantity(int $amount): void
-    {
-        if ($this->quantity >= $amount) {
-            $this->quantity -= $amount;
-        } else {
-            echo 'Not enough quantity<br>';
-        }
-    }
-
-    public function displayProductInfo(): void
-    {
-        echo 'Name: ' . $this->name . '<br>';
-        echo 'Price: ' . $this->price . '<br>';
-        echo 'Quantity: ' . $this->quantity . '<br>';
-        echo 'Total cost: ' . $this->totalCost() . '<br>';
-        echo $this->isAvailable() ? 'We have this<br>' : 'We don\'t have this<br>';
+        $this->value = $value;
     }
 }
 
-$product = new Product("Phone", 10000, 511);
-$product->displayProductInfo();
+class ProductProcessor
+{
+    public function save(Product $product): void
+    {
+        echo 'Product' . $product->getName() . ' saved!';
+    }
 
-$product->applyDiscount(10);
-echo "Price after discount: " . $product->getPrice() . "<br>";
+    public function update(Product $product): void
+    {
+        echo 'Product' . $product->getName() . ' updated!';
+    }
 
-$product->increaseQuantity(10);
-$product->displayProductInfo();
+    public function delete(Product $product): void
+    {
+        echo 'Product' . $product->getName() . ' deleted!';
+    }
+}
 
-$product->decreaseQuantity(5);
-$product->displayProductInfo();
+class ProductPresenter
+{
+    public function show(Product $product):void
+    {
+        echo 'Product name'. $product->getName() . ' <br>';
+        echo 'Product value'. $product->getValue() . '<br>';
+    }
+
+    public function print(Product $product):void
+    {
+        echo 'Printing Product:'. print_r($product->getName()) . '<br>';
+    }
+
+}
+
+$product = new Product("Laptop", 1500);
+
+$processor = new ProductProcessor();
+$processor->save($product);
+
+$presenter = new ProductPresenter();
+$presenter->show($product);
+$presenter->print($product);
