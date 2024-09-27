@@ -1,75 +1,72 @@
 <?php
 
-class Product
+interface FormatterInterface
 {
-    private string $name;
-    private string $value;
+    public function format($string);
+}
 
-    public function __construct(string $name, string $value)
+class RowFormatter implements FormatterInterface
+{
+    public function format($string)
     {
-        $this->name = $name;
-        $this->value = $value;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
+        return $string;
     }
 }
 
-class ProductProcessor
+class DataFormatter implements FormatterInterface
 {
-    public function save(Product $product): void
+    public function format($string)
     {
-        echo 'Product' . $product->getName() . ' saved!';
-    }
-
-    public function update(Product $product): void
-    {
-        echo 'Product' . $product->getName() . ' updated!';
-    }
-
-    public function delete(Product $product): void
-    {
-        echo 'Product' . $product->getName() . ' deleted!';
+        return date('Y-m-d H:i:s' . ' ' . $string);
     }
 }
 
-class ProductPresenter
+interface DeliveryInterface
 {
-    public function show(Product $product):void
-    {
-        echo 'Product name'. $product->getName() . ' <br>';
-        echo 'Product value'. $product->getValue() . '<br>';
-    }
+    public function deliver($formatedString);
+}
 
-    public function print(Product $product):void
+class EmailDelivery implements DeliveryInterface
+{
+    public function deliver($formatedString)
     {
-        echo 'Printing Product:'. print_r($product->getName()) . '<br>';
+        echo 'Your format is' . $formatedString . 'by email';
+    }
+}
+
+class SMSDelivery implements DeliveryInterface
+{
+    public function deliver($formatedString)
+    {
+        echo 'Your format is' . $formatedString . 'by sms';
+    }
+}
+
+class ConcsoleDelivery implements DeliveryInterface
+{
+    public function deliver($formatedString)
+    {
+        echo 'Your format is' . $formatedString . 'by console';
     }
 
 }
 
-$product = new Product("Laptop", 1500);
+class Logger
+{
+    private $formatter;
+    private $delivery;
 
-$processor = new ProductProcessor();
-$processor->save($product);
 
-$presenter = new ProductPresenter();
-$presenter->show($product);
-$presenter->print($product);
+    public function __construct(FormatterInterface $formatter, DeliveryInterface $delivery)
+    {
+        $this->formatter = $formatter;
+        $this->delivery = $delivery;
+    }
+    public function log($string){
+        $formattedString = $this->formatter->format($string);
+        $this->delivery->deliver($formattedString);
+    }
+}
+
+$logger = new Logger(new RowFormatter(), new SmsDelivery());
+$logger->log('Emergency error! Please fix me!');
