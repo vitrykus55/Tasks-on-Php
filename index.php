@@ -1,17 +1,34 @@
-<!--#2-->
-
 <?php
-$arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-$n = 3;
 
-$result = [];
-
-for ($i = 0; $i < count($arr); $i += $n)
+interface DataAdapterInterface
 {
-    $result[]= array_slice($arr, $i, $n);
+    public function getData();
 }
-echo '<pre>';
-print_r($result);
-echo '</pre>';
 
-?>
+class MySQL implements DataAdapterInterface
+{
+    public function getData()
+    {
+        return 'some data from db';
+    }
+}
+
+class Controller
+{
+    private $db;
+
+    public function __construct(DataAdapterInterface $db)
+    {
+        $this->db = $db;
+    }
+
+    public function getData()
+    {
+        return $this->db->getData();
+    }
+}
+
+$mysql = new MySQL();
+$controller = new Controller($mysql);
+echo $controller->getData();
+
