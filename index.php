@@ -1,89 +1,40 @@
 <?php
 
-interface FormatterInterface
+interface Eat
 {
-    public function format($string);
+    public function eat();
 }
 
-class RowFormatter implements FormatterInterface
+interface Fly
 {
-    public function format($string)
+    public function fly();
+}
+
+class Swallow implements Eat, Fly
+{
+    public function eat()
     {
-        return $string;
+        echo 'Swallow is eating insects.';
     }
-}
 
-class DataFormatter implements FormatterInterface
-{
-    public function format($string)
+    public function fly()
     {
-        return date('Y-m-d H:i:s' . ' ' . $string);
+        echo 'wallow is flying high in the sky.';
     }
+
 }
 
-interface DeliveryInterface
+class Ostrich implements Eat
 {
-    public function deliver($formatedString);
-}
-
-class EmailDelivery implements DeliveryInterface
-{
-    public function deliver($formatedString)
+    public function eat()
     {
-        echo 'Your format is' . $formatedString . 'by email';
+        echo 'Ostrich is eating plants and seeds.';
     }
 }
 
-class SMSDelivery implements DeliveryInterface
-{
-    public function deliver($formatedString)
-    {
-        echo 'Your format is' . $formatedString . 'by sms';
-    }
-}
+$swallow = new Swallow();
+$swallow->eat();
+$swallow->fly();
 
-class ConcsoleDelivery implements DeliveryInterface
-{
-    public function deliver($formatedString)
-    {
-        echo 'Your format is' . $formatedString . 'by console';
-    }
-
-}
-
-interface StorageInterface
-{
-    public function connect($string);
-}
-
-class Storage implements StorageInterface
-{
-    public function connect($string)
-    {
-        echo 'Your storage is' . $string . ' not working now!';
-    }
-}
-
-class Logger
-{
-    private $formatter;
-    private $delivery;
-
-
-    public function __construct(FormatterInterface $formatter, DeliveryInterface $delivery, StorageInterface $storage)
-    {
-        $this->formatter = $formatter;
-        $this->delivery = $delivery;
-        $this->storage = $storage;
-
-    }
-    public function log($string){
-        $formattedString = $this->formatter->format($string);
-        $this->delivery->deliver($formattedString);
-        $this->storage->connect($formattedString);
-    }
-}
-
-$logger = new Logger(new RowFormatter(), new SmsDelivery(), new Storage());
-
-$logger->log('Emergency error! Please fix me!');
+$ostrich = new Ostrich();
+$ostrich->eat();
