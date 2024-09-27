@@ -51,22 +51,39 @@ class ConcsoleDelivery implements DeliveryInterface
 
 }
 
+interface StorageInterface
+{
+    public function connect($string);
+}
+
+class Storage implements StorageInterface
+{
+    public function connect($string)
+    {
+        echo 'Your storage is' . $string . ' not working now!';
+    }
+}
+
 class Logger
 {
     private $formatter;
     private $delivery;
 
 
-    public function __construct(FormatterInterface $formatter, DeliveryInterface $delivery)
+    public function __construct(FormatterInterface $formatter, DeliveryInterface $delivery, StorageInterface $storage)
     {
         $this->formatter = $formatter;
         $this->delivery = $delivery;
+        $this->storage = $storage;
+
     }
     public function log($string){
         $formattedString = $this->formatter->format($string);
         $this->delivery->deliver($formattedString);
+        $this->storage->connect($formattedString);
     }
 }
 
-$logger = new Logger(new RowFormatter(), new SmsDelivery());
+$logger = new Logger(new RowFormatter(), new SmsDelivery(), new Storage());
+
 $logger->log('Emergency error! Please fix me!');
